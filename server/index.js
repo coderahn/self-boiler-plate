@@ -25,19 +25,20 @@ app.get('/api/hello', (req, res) => {
 })
 
 //계정 등록
-app.post('/register',(req,res) => {
+app.post('/api/users/register',(req,res) => {
   const user = new User(req.body);
 
   user.save((err,userInfo) => {
     if(err) return res.json({success:false, err})
     return res.status(200).json({
-      success: true
+      success: true,
+      fromRouter : true
     })
   });
 })
 
 //계정 로그인
-app.post('/login', (req,res) => {
+app.post('/api/users/login', (req,res) => {
   //{User}랑 User랑 뭔차이일까?
   User.findOne({email:req.body.email},(err,user) => {
     if(!user){
@@ -81,7 +82,8 @@ app.get('/api/users/logout', auth, (req,res) => {
     ,(err, user) => {
       if(err) return res.json({success:false, err})
       return res.status(200).send({
-        success:true
+        success:true,
+        userId : user._id
       })
     })
 })
